@@ -15,27 +15,39 @@ module.exports = {
     return queryInterface.bulkInsert('Todos', [
       {
         task: 'Pair Project',
-        isCompleted: false
+        isCompleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         task: 'Coding',
-        isCompleted: false
+        isCompleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         task: 'Belanja',
-        isCompleted: false
+        isCompleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         task: 'Main Game',
-        isCompleted: false
+        isCompleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         task: 'Makan',
-        isCompleted: false
+        isCompleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
       },
       {
         task: 'Tidur Siang',
-        isCompleted: false
+        isCompleted: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
 
 
