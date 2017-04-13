@@ -11,7 +11,6 @@ class Controller {
     this.argv = process.argv;
     this.model = model;
     this.view = new View();
-    // this.userInput = userInput;
   }
 
   getUserInput(startingIdx) {
