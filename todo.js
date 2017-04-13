@@ -3,77 +3,16 @@
 //write your code here
 
 const model = require('./models');
+const argv = process.argv;
+const userInput = argv.splice(3, argv.length).join(' ');
 
 class Controller {
   constructor() {
     this.argv = process.argv;
     this.model = model;
-    this.view = new View(); 
+    this.view = new View();
+    // this.userInput = userInput;
   }
-
-  addTask() {
-    let db = this.model;
-    db.Todo.create({
-      task: 'Testing',
-      isCompleted: false
-    })
-    .then(() => {
-      console.log('success');
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  }
-
-  start() {
-    switch(this.argv[2]) {
-      case 'help':
-      default:
-        console.log('help');
-        // this.help();
-        break;
-      case 'add':
-        console.log('add');
-        // this.add(this.getUserInput(3).join(' '))
-        break;
-      case 'list':
-        console.log('list');
-        // this.list();
-        break;
-      case 'task':
-        console.log('task');
-        // this.task(this.getUserInput(3).join(' '));
-        break;
-      case 'delete':
-        console.log('delete');
-        // this.delete(this.getUserInput(3).join(' '));
-        break;
-      case 'complete':
-        console.log('complete')
-        // this.complete(this.getUserInput(3).join(' '));
-        break;
-      case 'uncomplete':
-        console.log('uncomplete');
-        // this.uncomplete(this.getUserInput(3).join(' '));
-        break;
-      case 'list:outstanding':
-        console.log('outstanding');
-        // this.listOutstanding(this.getUserInput(3).join(' '));
-        break;
-      case 'list:complete':
-        console.log('list:complete');
-        // this.listComplete(this.getUserInput(3).join(' '));
-        break;
-      case 'tag':
-        console.log('tag');
-        // this.tag(this.getUserInput(3).join(' '));
-        break;
-      case 'filter':
-        console.log('filter');
-        // this.filter(this.getUserInput(3).join(' '));
-        break;
-    }
-  } // start method
 
   getUserInput(startingIdx) {
     let result = [];
@@ -83,8 +22,85 @@ class Controller {
     return result;
   } //getUserInputMethod
 
+  addTask(content) {
+    let model = this.model;
+    model.Todo.create({
+      task: content,
+      isCompleted: false
+    })
+    .then((content) => {
+      this.view.addMsg(content.task);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+  
+  listTask() {
+    let model = this.model;
+    model.Todo.findAll()
+    .then((tasks) => {
+      tasks.forEach((task, idx) => {
+        console.log(`${task.id} [${(task.isCompleted ? 'X' : ' ')}] : ${task.task}`);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
 
+  deleteTask(id) {
+    let model = this.model;
+    model.Todo.find({ //find adalah alias dari findOne
+      where: {
+        id: id
+      }
+    })
+    .then((result) => {
+      this.view.deleteMsg(result.task);
+      result.destroy();
+    })
+  }
 
+  showOneTask(id) {
+    let model = this.model;
+    model.Todo.findById(id)
+    .then((task) => {
+      console.log(`${task.id} [${(task.isCompleted ? 'X' : ' ')}] : ${task.task}`);
+    });
+  }
+
+  complete(id) {
+    let obj = this;
+    let model = this.model;
+    model.Todo.update({
+      isCompleted: true
+    },
+    {
+      where: {
+        id: id
+      }
+    })
+    .then(function(task) {
+      obj.view.completeMsg(task.task);
+    });
+  }
+
+  uncomplete(id) {
+    let obj = this;
+    let model = this.model;
+    model.Todo.update({
+      isCompleted: false
+    },
+    {
+      where: {
+        id: id
+      }
+    })
+    .then(function(task) {
+      obj.view.completeMsg(task.task);
+    });
+  }
 
 }
 
@@ -92,13 +108,53 @@ class View {
   constructor() {
   }
   
-  viewMsg() {
-    
+  addMsg(task) {
+    console.log(`Successfully adding ${task} to your todo list`);
+  }
+
+  deleteMsg(task) {
+    console.log(`Successfully delete ${task} from your todo list`);
+  }
+
+  completeMsg(task) {
+    console.log(`Successfully complete ${task} from your todo list`);
+  }
+
+  uncompleteMsg(task) {
+    console.log(`Successfully uncomplete ${task} from your todo list`);
   }
 
 }
 
 let myTodo = new Controller();
 
-// console.log(myModel.Todos)
-myTodo.addTask();
+
+let processUserInput = (myTodo) => {
+  switch(argv[2]) {
+    case 'help':
+    default:
+      console.log('help');
+      break;
+    case 'add':
+      myTodo.addTask(userInput);
+      break;
+    case 'list':
+      myTodo.listTask();
+      break;
+    case 'delete':
+      myTodo.deleteTask(userInput);
+      break;
+    case 'task':
+      myTodo.showOneTask(userInput);
+      break;
+    case 'complete':
+      myTodo.complete(userInput);
+      break;
+    case 'uncomplete':
+      myTodo.uncomplete(userInput);
+      break;
+  }
+}
+
+processUserInput(myTodo);
+
