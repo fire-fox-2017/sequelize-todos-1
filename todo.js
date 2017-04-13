@@ -78,10 +78,11 @@ class Controller {
     {
       where: {
         id: id
-      }
+      },
+      returning: true, // untuk me return the affected row berdasarkan query di atas. dalam hal ini fungsinya hanya untuk view complete message di atas, supaya nama task nya bisa ditampillkan.
     })
-    .then(function(task) {
-      obj.view.completeMsg(task.task);
+    .then(function(result) {
+      obj.view.completeMsg(`'${result[1][0].dataValues.task}'`);
     });
   }
 
@@ -94,10 +95,11 @@ class Controller {
     {
       where: {
         id: id
-      }
+      },
+      returning: true,
     })
-    .then(function(task) {
-      obj.view.completeMsg(task.task);
+    .then(function(result) {
+      obj.view.uncompleteMsg(`'${result[1][0].dataValues.task}'`);
     });
   }
 
