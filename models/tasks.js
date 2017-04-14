@@ -18,13 +18,19 @@ module.exports = function(sequelize, DataTypes) {
           });
       },
       add: function(task) {
-        Tasks.create({"task": task, "complete": false}).then((data) => {console.log("ADD success");}).catch((err) => {return err;});
+        Tasks.create({"task": task, "complete": false})
+          .then((data) => {
+            console.log(`Appended "${task}" to your TODO list.`);
+          })
+          .catch((err) => {
+            return err;
+          });
       },
       delete: function(id) {
         Tasks.destroy({where : {"id": id}})
           .then((destroyed) => {
             if(destroyed > 0) {
-              console.log(`DELETE success, ${destroyed} data deleted`);
+              console.log(`Deleted Task with id ${id} form your to do list, ${destroyed} data deleted`);
             } else {
               console.log(`ID is not found`);
             }
@@ -43,11 +49,7 @@ module.exports = function(sequelize, DataTypes) {
           });
       }
     },
-    instanceMethods: {
-      complete: function() {
-        this.updateAttributes({"complete": true}).then((status) => {console.log(status)}).catch((err) => {console.log(err)});
-      }
-    }
+    instanceMethods: {}
   });
   return Tasks;
 };
