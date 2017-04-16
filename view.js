@@ -14,30 +14,31 @@ class View {
     }
     console.log(table.toString());
   }
-  addView(cb) {
+  addView(cb, data) {
     if (cb) {
-      console.log('Task saving to database is success')
+
+      console.log(`Task '${data.task}' saving to database is success`)
     } else {
       console.log('Failed saving to database !')
     }
   }
-  completedView(cb) {
+  completedView(cb, data) {
     if (cb) {
-      console.log('Task changed to complete is success')
+      console.log(`Task ${data} changed to complete is success`)
     } else {
       console.log('Failed Task changed to complete !')
     }
   }
-  uncompletedView(cb) {
+  uncompletedView(cb, data) {
     if (cb) {
-      console.log('Task changed to uncomplete is success')
+      console.log(`Task ${data} changed to uncomplete is success`)
     } else {
       console.log('Failed Task changed to uncomplete !')
     }
   }
-  deleteView(cb) {
+  deleteView(cb, data) {
     if (cb) {
-      console.log('Task delete is success')
+      console.log(`Task ${data} delete is success`)
     } else {
       console.log('Failed delete task !')
     }
