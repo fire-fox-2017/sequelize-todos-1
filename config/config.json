@@ -1,9 +1,10 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "todo",
+    "username": "nextacademy",
+    "password": "nextacademy",
+    "database": "todojs",
     "host": "127.0.0.1",
+    "port": "5432",
     "dialect": "postgres"
   }
 }
