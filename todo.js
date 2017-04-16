@@ -18,6 +18,13 @@ let complete = (value) => {
   })
 
 }
+let uncomplete = (value) => {
+  db.todos.update({completed:false},{where: {id:value}})
+  .then(todos=>{
+    console.log(todos);
+  })
+
+}
 let hapus = (value) =>{
   db.todos.destroy({where:{id:value}})
   .then(todos=>{
@@ -50,6 +57,9 @@ if(argv.length>1){
   }
   if(argv[0]=='complete'){
     complete(Number(argv[1]));
+  }
+  if(argv[0]=='uncomplete'){
+    uncomplete(Number(argv[1]));
   }
   if(argv[0]=='delete'){
     hapus(Number(argv[1]));
