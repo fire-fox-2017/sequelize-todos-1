@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "parel",
+    "password": "12345",
+    "database": "parel",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
